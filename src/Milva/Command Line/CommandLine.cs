@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Security;
+using System.Text;
+
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
@@ -25,7 +27,7 @@ namespace Milva
 {
     public static class CommandLine
     {
-        public static void HashEachFile(string[] filePaths, HashFunction hashFunction)
+        public static void HashEachFile(string[] filePaths, HashFunction hashFunction, bool isText = false)
         {
             if (filePaths == null)
             {
@@ -36,7 +38,14 @@ namespace Milva
             {
                 try
                 {
-                    if (Directory.Exists(filePath))
+                    byte[] hash;
+                    if (isText)
+                    {
+
+                        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(filePath));
+                        hash = HashingAlgorithms.GetHash(stream, hashFunction);
+                    }
+                    else if (Directory.Exists(filePath))
                     {
                         string[] files = Directory.GetFiles(filePath, searchPattern: "*", SearchOption.AllDirectories);
                         DisplayMessage.FilePathMessage(filePath, "Hashing each file in the directory...");
@@ -44,13 +53,17 @@ namespace Milva
                         if (filePaths.Length > 1) { Console.WriteLine(); }
                         continue;
                     }
-                    if (!File.Exists(filePath))
+                    else if (!File.Exists(filePath))
                     {
                         DisplayMessage.FilePathError(filePath, "This file path doesn't exist.");
                         continue;
                     }
-                    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, HashingAlgorithms.BufferSize, FileOptions.SequentialScan);
-                    byte[] hash = HashingAlgorithms.GetHash(fileStream, hashFunction);
+                    else
+                    {
+                        using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, HashingAlgorithms.BufferSize, FileOptions.SequentialScan);
+                        hash = HashingAlgorithms.GetHash(stream, hashFunction);
+                    }
+                    
                     DisplayMessage.FilePathMessage(filePath, BitConverter.ToString(hash).Replace("-", "").ToLower());
                 }
                 catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or SecurityException or NotSupportedException)

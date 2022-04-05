@@ -70,11 +70,14 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
 
         [Option("--md5", "hash a file using MD5", CommandOptionType.NoValue)]
         public bool MD5 { get; }
+        
+        [Option("-t|--text", "specify text to hash", CommandOptionType.NoValue)]
+        private bool IsText  { get; }
 
         [Option("-a|--about", "view the program version and license", CommandOptionType.NoValue)]
         public bool About { get; }
 
-        [Argument(order: 0, Description = "specify a file path", Name = "file")]
+        [Argument(order: 0, Description = "specify a file path", Name = "fileOrText")]
         public string[] FilePaths { get; }
 
         public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
@@ -84,55 +87,55 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
             Console.WriteLine();
             if (SHAKE256)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE256, IsText);
             }
             else if (SHAKE128)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE128);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE128, IsText);
             }
             else if (SHA3_512)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_512, IsText);
             }
             else if (SHA3_384)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_384);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_384, IsText);
             }
             else if (SHA3_256)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_256, IsText);
             }
             else if (BLAKE3)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE3);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE3, IsText);
             }
             else if (BLAKE2b512)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b512, IsText);
             }
             else if (BLAKE2b256)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b256, IsText);
             }
             else if (SHA512)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA512, IsText);
             }
             else if (SHA384)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA384);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA384, IsText);
             }
             else if (SHA256)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA256, IsText);
             }
             else if (SHA1)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.SHA1);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA1, IsText);
             }
             else if (MD5)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.MD5);
+                CommandLine.HashEachFile(FilePaths, HashFunction.MD5, IsText);
             }
             else if (About)
             {

@@ -28,7 +28,7 @@ namespace Milva
     {
         public const int BufferSize = 131072;
 
-        public static byte[] GetHash(FileStream fileStream, HashFunction hashFunction)
+        public static byte[] GetHash(Stream fileStream, HashFunction hashFunction)
         {
             return hashFunction switch
             {
@@ -49,7 +49,7 @@ namespace Milva
             };
         }
 
-        private static byte[] GetSHAKE(FileStream fileStream, int outputBitLength)
+        private static byte[] GetSHAKE(Stream fileStream, int outputBitLength)
         {
             int bytesRead;
             var buffer = new byte[BufferSize];
@@ -63,7 +63,7 @@ namespace Milva
             return hash;
         }
 
-        private static byte[] GetSHA3(FileStream fileStream, int outputBitLength)
+        private static byte[] GetSHA3(Stream fileStream, int outputBitLength)
         {
             int bytesRead;
             var buffer = new byte[BufferSize];
@@ -77,7 +77,7 @@ namespace Milva
             return hash;
         }
 
-        private static byte[] GetBLAKE3(FileStream fileStream)
+        private static byte[] GetBLAKE3(Stream fileStream)
         {
             int bytesRead;
             var buffer = new byte[BufferSize];
@@ -91,20 +91,20 @@ namespace Milva
             return hash.AsSpanUnsafe().ToArray();
         }
 
-        private static byte[] GetBLAKE2b(FileStream fileStream, int outputBytesLength)
+        private static byte[] GetBLAKE2b(Stream fileStream, int outputBytesLength)
         {
             using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, outputBytesLength);
             return blake2b.ComputeHash(fileStream);
         }
 
-        private static byte[] GetSHA512(FileStream fileStream) => SHA512.Create().ComputeHash(fileStream);
+        private static byte[] GetSHA512(Stream fileStream) => SHA512.Create().ComputeHash(fileStream);
 
-        private static byte[] GetSHA384(FileStream fileStream) => SHA384.Create().ComputeHash(fileStream);
+        private static byte[] GetSHA384(Stream fileStream) => SHA384.Create().ComputeHash(fileStream);
 
-        private static byte[] GetSHA256(FileStream fileStream) => SHA256.Create().ComputeHash(fileStream);
+        private static byte[] GetSHA256(Stream fileStream) => SHA256.Create().ComputeHash(fileStream);
 
-        private static byte[] GetSHA1(FileStream fileStream) => SHA1.Create().ComputeHash(fileStream);
+        private static byte[] GetSHA1(Stream fileStream) => SHA1.Create().ComputeHash(fileStream);
 
-        private static byte[] GetMD5(FileStream fileStream) => MD5.Create().ComputeHash(fileStream);
+        private static byte[] GetMD5(Stream fileStream) => MD5.Create().ComputeHash(fileStream);
     }
 }
